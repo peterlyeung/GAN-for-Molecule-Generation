@@ -2,8 +2,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader
-
 from rdkit import Chem
 from rdkit.Chem import MolToSmiles
 
@@ -22,7 +20,7 @@ class Generator(nn.Module):
 
 class Discriminator(nn.Module):
     def __init__(self, input_size):
-        super(Discriminator, self).__init__()  # Add () after super
+        super(Discriminator, self).__init__()
         self.model = nn.Sequential(
             nn.Linear(input_size, 128),
             nn.ReLU(),
@@ -32,7 +30,6 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         return self.model(x)
-
 
 # Generate random data for training (you should replace this with your dataset)
 data_dim = 100  # Dimension of random input
@@ -92,7 +89,7 @@ for epoch in range(num_epochs):
             random_samples = torch.randn(num_samples, generator_input_dim)
             generated_samples = generator(random_samples)
             for sample in generated_samples:
-                molecule = MolToSmiles(Chem.MolFromSmiles(sample.tolist()))
+                molecule = MolToSmiles(Chem.MolFromSmiles(sample.tolist()[0]))
                 print(f"Generated Molecule: {molecule}")
 
 # You can save the trained generator for future use
